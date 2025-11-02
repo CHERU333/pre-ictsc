@@ -8,10 +8,13 @@ topology:
       binds:
         - ./broken/rt1.frr.conf:/etc/frr/frr.conf
       exec:
-        - bash -lc "sed -i 's/^bgpd=.*/bgpd=yes/' /etc/frr/daemons || true"
-        - bash -lc "sed -i 's/^zebra=.*/zebra=yes/' /etc/frr/daemons || true"
-        - bash -lc "echo 'service integrated-vtysh-config' > /etc/frr/vtysh.conf"
-        - bash -lc "/usr/lib/frr/frrinit.sh restart"
+        - bash -lc "echo '#!/bin/bash' > /usr/local/bin/start-frr.sh"
+        - bash -lc "echo 'sed -i \"s/^bgpd=.*/bgpd=yes/\" /etc/frr/daemons || true' >> /usr/local/bin/start-frr.sh"
+        - bash -lc "echo 'sed -i \"s/^zebra=.*/zebra=yes/\" /etc/frr/daemons || true' >> /usr/local/bin/start-frr.sh"
+        - bash -lc "echo 'echo service integrated-vtysh-config > /etc/frr/vtysh.conf' >> /usr/local/bin/start-frr.sh"
+        - bash -lc "echo 'pkill -f watchfrr || true' >> /usr/local/bin/start-frr.sh"
+        - bash -lc "echo '/usr/lib/frr/watchfrr -d zebra bgpd >/var/log/frr_start.log 2>&1 &' >> /usr/local/bin/start-frr.sh"
+        - bash -lc "chmod +x /usr/local/bin/start-frr.sh && nohup /usr/local/bin/start-frr.sh >/dev/null 2>&1 &"
 
     rt2:
       kind: linux
@@ -19,10 +22,13 @@ topology:
       binds:
         - ./broken/rt2.frr.conf:/etc/frr/frr.conf
       exec:
-        - bash -lc "sed -i 's/^bgpd=.*/bgpd=yes/' /etc/frr/daemons || true"
-        - bash -lc "sed -i 's/^zebra=.*/zebra=yes/' /etc/frr/daemons || true"
-        - bash -lc "echo 'service integrated-vtysh-config' > /etc/frr/vtysh.conf"
-        - bash -lc "/usr/lib/frr/frrinit.sh restart"
+        - bash -lc "echo '#!/bin/bash' > /usr/local/bin/start-frr.sh"
+        - bash -lc "echo 'sed -i \"s/^bgpd=.*/bgpd=yes/\" /etc/frr/daemons || true' >> /usr/local/bin/start-frr.sh"
+        - bash -lc "echo 'sed -i \"s/^zebra=.*/zebra=yes/\" /etc/frr/daemons || true' >> /usr/local/bin/start-frr.sh"
+        - bash -lc "echo 'echo service integrated-vtysh-config > /etc/frr/vtysh.conf' >> /usr/local/bin/start-frr.sh"
+        - bash -lc "echo 'pkill -f watchfrr || true' >> /usr/local/bin/start-frr.sh"
+        - bash -lc "echo '/usr/lib/frr/watchfrr -d zebra bgpd >/var/log/frr_start.log 2>&1 &' >> /usr/local/bin/start-frr.sh"
+        - bash -lc "chmod +x /usr/local/bin/start-frr.sh && nohup /usr/local/bin/start-frr.sh >/dev/null 2>&1 &"
 
     rt3:
       kind: linux
@@ -30,10 +36,13 @@ topology:
       binds:
         - ./broken/rt3.frr.conf:/etc/frr/frr.conf
       exec:
-        - bash -lc "sed -i 's/^bgpd=.*/bgpd=yes/' /etc/frr/daemons || true"
-        - bash -lc "sed -i 's/^zebra=.*/zebra=yes/' /etc/frr/daemons || true"
-        - bash -lc "echo 'service integrated-vtysh-config' > /etc/frr/vtysh.conf"
-        - bash -lc "/usr/lib/frr/frrinit.sh restart"
+        - bash -lc "echo '#!/bin/bash' > /usr/local/bin/start-frr.sh"
+        - bash -lc "echo 'sed -i \"s/^bgpd=.*/bgpd=yes/\" /etc/frr/daemons || true' >> /usr/local/bin/start-frr.sh"
+        - bash -lc "echo 'sed -i \"s/^zebra=.*/zebra=yes/\" /etc/frr/daemons || true' >> /usr/local/bin/start-frr.sh"
+        - bash -lc "echo 'echo service integrated-vtysh-config > /etc/frr/vtysh.conf' >> /usr/local/bin/start-frr.sh"
+        - bash -lc "echo 'pkill -f watchfrr || true' >> /usr/local/bin/start-frr.sh"
+        - bash -lc "echo '/usr/lib/frr/watchfrr -d zebra bgpd >/var/log/frr_start.log 2>&1 &' >> /usr/local/bin/start-frr.sh"
+        - bash -lc "chmod +x /usr/local/bin/start-frr.sh && nohup /usr/local/bin/start-frr.sh >/dev/null 2>&1 &"
 
     sv-1:
       kind: linux
