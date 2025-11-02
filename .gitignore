@@ -1,0 +1,54 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# VS Code
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+*.pyo
+*.pyd
+.Python
+.env
+venv/
+ENV/
+env/
+.venv/
+pip-wheel-metadata/
+
+# Jupyter
+.ipynb_checkpoints
+
+# Logs & temp
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Containerlab / Docker
+clab-*/
+*.tar
+*.img
+*.qcow2
+*.iso
+*.pid
+*.sock
+*.bak
+docker-compose.override.yml
+
+# Node.js / Frontend
+node_modules/
+dist/
+build/
+
+# System backups
+*~
+*.bak
+*.old
+*.orig
+*.save

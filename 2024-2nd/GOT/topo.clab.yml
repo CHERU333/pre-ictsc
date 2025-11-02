@@ -1,0 +1,56 @@
+name: ictsc-evpn
+
+topology:
+  nodes:
+    rt1:
+      kind: linux
+      image: frrouting/frr:latest
+      binds:
+        - ./broken/rt1.frr.conf:/etc/frr/frr.conf
+      exec:
+        - bash -lc "sed -i 's/^bgpd=.*/bgpd=yes/' /etc/frr/daemons || true"
+        - bash -lc "sed -i 's/^zebra=.*/zebra=yes/' /etc/frr/daemons || true"
+        - bash -lc "echo 'service integrated-vtysh-config' > /etc/frr/vtysh.conf"
+        - bash -lc "/usr/lib/frr/frrinit.sh restart"
+
+    rt2:
+      kind: linux
+      image: frrouting/frr:latest
+      binds:
+        - ./broken/rt2.frr.conf:/etc/frr/frr.conf
+      exec:
+        - bash -lc "sed -i 's/^bgpd=.*/bgpd=yes/' /etc/frr/daemons || true"
+        - bash -lc "sed -i 's/^zebra=.*/zebra=yes/' /etc/frr/daemons || true"
+        - bash -lc "echo 'service integrated-vtysh-config' > /etc/frr/vtysh.conf"
+        - bash -lc "/usr/lib/frr/frrinit.sh restart"
+
+    rt3:
+      kind: linux
+      image: frrouting/frr:latest
+      binds:
+        - ./broken/rt3.frr.conf:/etc/frr/frr.conf
+      exec:
+        - bash -lc "sed -i 's/^bgpd=.*/bgpd=yes/' /etc/frr/daemons || true"
+        - bash -lc "sed -i 's/^zebra=.*/zebra=yes/' /etc/frr/daemons || true"
+        - bash -lc "echo 'service integrated-vtysh-config' > /etc/frr/vtysh.conf"
+        - bash -lc "/usr/lib/frr/frrinit.sh restart"
+
+    sv-1:
+      kind: linux
+      image: ictsc/sv1:latest
+      binds:
+        - ./servers/sv-1/client.py:/home/user/client.py
+      exec:
+        - bash -lc "ip link set eth1 up; ip link add link eth1 name eth1.100 type vlan id 100; ip addr add 192.168.20.1/27 dev eth1.100; ip link set eth1.100 up"
+
+    sv-2:
+      kind: linux
+      image: ictsc/sv2:latest
+      exec:
+        - bash -lc "ip link set eth1 up; ip addr add 192.168.20.2/27 dev eth1; service apache2 start"
+
+  links:
+    - endpoints: ["rt1:eth2","rt2:eth1"]
+    - endpoints: ["rt3:eth1","rt2:eth2"]
+    - endpoints: ["sv-1:eth1","rt1:eth1"]
+    - endpoints: ["sv-2:eth1","rt3:eth2"]
